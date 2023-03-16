@@ -1,8 +1,9 @@
-using MercedesBenzApiAgencias.Contracts;
+using MercedesBenzApiServicios.Services;
+using MercedesBenzApiServicios.Services.Contracts;
 using MercedesBenzDBContext;
 using MercedesBenzJwtAuthentication;
 using MercedesBenzLibrary;
-using MercedesBenzLogger;
+using MercedesBenzModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace MercedesBenzApiAgencias
+namespace MercedesBenzApiValidacion
 {
     public class Startup
     {
@@ -24,20 +25,21 @@ namespace MercedesBenzApiAgencias
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();  
+            services.AddHttpContextAccessor();
             services.AddHeaderForwarded();
             services.AddCustomAuthenticationJwt();
 
             services.AddSingleton<ApplicationDBContext>();
 
             services.AddScoped<AuthenticationControllerFilter>();
-            services.AddScoped<IAgenciaRepository, AgenciaRepository>();
+            services.AddScoped<IGeneralRepository, GeneralRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MercedesBenzApiAgencias", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MercedesBenzApiServicios", Version = "v1" });
             });
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +49,7 @@ namespace MercedesBenzApiAgencias
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MercedesBenzApiAgencias v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MercedesBenzApiServicios v1"));
             }
 
             app.UseRouting();

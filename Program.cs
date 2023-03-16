@@ -3,11 +3,10 @@ using Microsoft.Extensions.Hosting;
 using MercedesBenzLogger;
 using Serilog;
 
-namespace MercedesBenzApiAgencias
+namespace MercedesBenzApiValidacion
 {
     public class Program
     {
-
         public static void Main(string[] args)
         {
             Log.Logger = CustomLogger.CustomLoggerConfiguration();
