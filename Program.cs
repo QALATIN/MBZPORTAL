@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using MercedesBenzLogger;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MercedesBenzApiValidacion
+namespace MercedesBenzServerWeb
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            Log.Logger = CustomLogger.CustomLoggerConfiguration();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -18,8 +21,6 @@ namespace MercedesBenzApiValidacion
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                })
-                .UseSerilog()
-            ;
+                });
     }
 }
